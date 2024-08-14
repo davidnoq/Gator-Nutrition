@@ -31,3 +31,43 @@ body {
     text-wrap: balance;
   }
 }
+
+@keyframes shine {
+  0% {
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.hover-shine:hover {
+  animation: shine 1s infinite;
+}
+
+.meshGradient {
+  position: absolute;
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(79, 127, 255, 0.3), rgba(255, 165, 0, 0) 70%);
+  opacity: 0.2;
+  pointer-events: none; /* Ensures it doesn’t interfere with clicks */
+  z-index: -1; /* Puts it behind other content */
+}
+.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.animateIn {
+  opacity: 1;
+  transform: translateY(0);
+}
