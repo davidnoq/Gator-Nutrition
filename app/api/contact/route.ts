@@ -38,7 +38,7 @@ export async function POST(req: Request) {
                 },
             });
             
-            return NextResponse.json({ message: 'Subscription successful' }, { status: 200 });
+            return NextResponse.json({ message: 'Subscription successful' }, { status: 400 });
         }
 
         return NextResponse.json({ message: 'Invalid action.' }, { status: 400 });

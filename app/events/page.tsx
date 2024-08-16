@@ -10,7 +10,7 @@ const Events = () => {
       <main className="bg-white min-w-min max-w-screen max-h-max m-auto px-20 py-32">
         <div className="text-center mb-32">
         <h1 className="text-4xl md:text-5xl font-bold text-black">Our Events</h1>
-          <h2 className="pt-4 text-black ">
+          <h2 className="pt-4 md:text-lg text-black ">
             We cater to a wide range of events. Here are some of the services we offer:
           </h2>
         </div>

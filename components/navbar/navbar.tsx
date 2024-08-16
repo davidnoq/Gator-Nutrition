@@ -14,7 +14,7 @@ const Navbar = () => {
   };
   return (
     
-    <div className="flex bg-gradient-to-r from-yellow-100 via-orange-100 to-red-100  filter  justify-between items-center md:gap-20 max-w-full px-3 md:py-6 sticky  top-0 left-0 right-0 backdrop-blur-lg z-50  border-b border-black/20  ">
+    <div className="flex   filter  justify-between items-center md:gap-20 max-w-full px-3 md:py-6 sticky  top-0 left-0 right-0 backdrop-blur-lg z-50  border-b border-black/20  ">
       
         {/* Left side: Menu, Locations, To-go Kit */}
        <ul className="flex  flex-col md:flex-row items-center  justify-center gap-6">

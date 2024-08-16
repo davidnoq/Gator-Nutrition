@@ -15,6 +15,10 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+/* Add this to your global CSS file or a specific CSS module */
+.transition-bg {
+  transition: background-color 0.3s ease, background-opacity 0.3s ease;
+}
 
 body {
   color: rgb(var(--foreground-rgb));

@@ -7,12 +7,12 @@ const TeaOnTheGo = () => {
   return (
     <div className="bg-white min-w-min max-w-screen max-h-max m-auto">
       <Navbar />
-      <div className="text-center px-20 pt-32">
+      <div className="text-center  max-w-2xl m-auto px-20 pt-32">
         <h1 className="text-3xl md:text-5xl font-bold text-black">Herbalife On the Go</h1>
-        <p className="pt-10 text-black ">
+        <p className="pt-10 md:text-lg text-black ">
           Enjoy the convenience of our tea kits, each priced at $9 with a flat rate shipping of $5. Order 3 or more kits at a time to stock up on your favorite flavors!
         </p>
-        <p className="pt-10 text-black ">
+        <p className="pt-10 md:text-lg text-black ">
           Our tea kits are individually packed for freshness and include Herbalife products such as Liftoff, Herbal Tea, Biotin, Collagen, and Stevia-sweetened flavors. Mega tea kits are shipped once weekly with an option to upgrade to a monthly supply. New flavors and menus are introduced each month, so there’s always something exciting to try!
         </p>
         
@@ -22,7 +22,7 @@ const TeaOnTheGo = () => {
       <section className="py-16 ">
         <div className="text-center px-20 mb-40">
           <h2 className="text-3xl font-bold text-black">Why Choose Our Tea Kits?</h2>
-          <p className="pt-4 text-black ">
+          <p className="pt-4 md:text-lg text-black ">
             Our tea kits offer more than just a drink—they provide a range of benefits tailored to your needs:
           </p>
         </div>

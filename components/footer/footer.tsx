@@ -12,16 +12,34 @@ const Footer = () => {
 
         {/* Navigation Links */}
         <div className="mb-4 flex space-x-8 font-bold">
-          <Link href="/events">Events</Link>
-          <Link href="/contact-us">Contact Us</Link>
-          <Link href="/locations">Locations</Link>
+          <div className="hover:bg-opacity-50 bg-opacity-0 hover:bg-orange-500 transition rounded-xl">
+            <Link href="/events" className="block py-2 px-4">
+              Events
+            </Link>
+          </div>
+          <div className="hover:bg-opacity-50 bg-opacity-0 hover:bg-orange-500 transition rounded-xl">
+            <Link href="/contact-us" className="block py-2 px-4">
+              Contact Us
+            </Link>
+          </div>
+          <div className="hover:bg-opacity-50 bg-opacity-0 hover:bg-orange-500 transition rounded-xl">
+            <Link href="/locations" className="block py-2 px-4">
+              Locations
+            </Link>
+          </div>
         </div>
 
         {/* Social Media Icons */}
-        <div className="flex space-x-6">
-          <Image src="/photos/facebook.png" alt="Facebook" width={20} height={20} />
-          <Image src="/photos/instagram.png" alt="Instagram" width={20} height={20} />
-          <Image src="/photos/tik-tok.png" alt="TikTok" width={20} height={20} />
+        <div className="flex space-x-6 mb-4">
+          <a href="https://www.facebook.com/p/Gator-Nutrition-61555407570486/" className="flex items-center">
+            <Image src="/photos/facebook.png" alt="Facebook" width={20} height={20} />
+          </a>
+          <a href="https://www.instagram.com/gator.nutrition/" className="flex items-center">
+            <Image src="/photos/instagram.png" alt="Instagram" width={20} height={20} />
+          </a>
+          <a href="https://www.tiktok.com/@gator.nutrition" className="flex items-center">
+            <Image src="/photos/tik-tok.png" alt="TikTok" width={20} height={20} />
+          </a>
         </div>
       </div>
     </footer>

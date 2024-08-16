@@ -9,8 +9,8 @@ const Locations = () => {
 
       <main className="bg-white min-w-min max-w-screen max-h-max m-auto px-6 py-32">
         <div className="text-center mb-32">
-          <h1 className="text-5xl font-bold text-black">Our Locations</h1>
-          <h2 className="pt-5 text-black">Visit us at one of our convenient locations!</h2>
+        <h1 className="text-5xl font-bold text-black">Our Sister Locations</h1>
+        <h2 className="pt-5 md:text-lg text-black">Discover one of our nearby locations for your convenience!</h2>
         </div>
 
         <div className="flex flex-col justify-center md:flex-row  gap-12 md:gap-20">

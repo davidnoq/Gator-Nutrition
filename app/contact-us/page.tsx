@@ -76,7 +76,7 @@ export default function Contact() {
         
       <div className="text-center  px-20 pt-32">
           <h1 className="text-5xl font-bold text-black">Contact Us</h1>
-          <h2 className="pt-5 text-black">We are open to all inquiries.</h2>
+          <h2 className="pt-5 md:text-lg text-black">We are open to all inquiries.</h2>
           <button className="border-transparent border-2 font-bold hover-shine mt-8 bg-orange-500 text-white py-2 px-4 rounded-lg  transition">
           <Link href="/">Go Home</Link>
           </button>
