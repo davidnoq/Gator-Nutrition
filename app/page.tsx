@@ -1,286 +1,228 @@
-'use client';
-import toast from "react-hot-toast";
+"use client";
+
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Toaster } from 'react-hot-toast';
+import Link from "next/link";
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer/footer";
-import {motion} from "framer-motion"
-import { FormEvent, useState } from "react";
-import Link from "next/link";
+import { useState, FormEvent } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { motion } from "framer-motion";
 
 export default function Home() {
+  /* ---------------- subscription popup logic (unchanged) ---------------- */
   const [showPopup, setShowPopup] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (
-      firstName.length === 0 ||
-      email.length === 0
-    ) {
+    if (!firstName || !email) {
       toast.remove();
       toast.error("Please fill out all fields.");
-    } else {
-      toast.loading("Loading...");
-      try {
-        const response = await fetch("/api/contact", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            action: "subscribe", // Ensure 'action' field is included
-            firstName,
-            email,
-          }),
-        });
-
-        const data = await response.json();
-        if (response.ok && data.message === "Success") {
-          toast.remove();
-          toast.success("Message submitted successfully!");
-          // Clear form fields
-          setFirstName("");
-          setEmail("");
-        } else {
-          toast.remove();
-          toast.error(data.message || "An error occurred while submitting the message.");
-        }
-      } catch (error) {
-        console.error("Error submitting contact form: ", error);
-        toast.remove();
-        toast.error("An error occurred while submitting the message.");
-      }
+      return;
+    }
+    toast.loading("Loading...");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "subscribe", firstName, email }),
+      });
+      const data = await res.json();
+      toast.remove();
+      if (res.ok && data.message === "Success") {
+        toast.success("Thanks for subscribing!");
+        setFirstName("");
+        setEmail("");
+      } else toast.error(data.message || "Something went wrong");
+    } catch {
+      toast.remove();
+      toast.error("Network error");
     }
   };
 
+  /* ----------------------------- hero images ---------------------------- */
+  const slides = [
+    "chocolate.jpg",
+    "coffee.jpg",
+    "strawber.jpg",
+    "red.jpg",
+    "orange.jpg",
+    "peep.jpg",
+  ];
+
+  const doubled = slides.concat(slides); // for seamless loop
+
   return (
-    <div className="bg-white relative">
+    <div className="bg-white text-black">
       <Navbar />
       <Toaster position="top-right" />
 
-      {/* First section for title and photo */}
-      <div className="flex flex-col md:flex-row gap-60 px-4 md:px-6 lg:px-10 max-w-screen-lg mt-20 mx-auto text-center">
-        {/* Left Section for text */}
-        <section className="py-6 md:py-10 flex-1 text-center md:text-left">
-          <h1 className="text-xl font-bold text-gray-500 mb-2">DRINK SMARTER</h1>
-          <p className="text-2xl md:text-3xl font-semibold mb-2">
-            We have all your<br />
-            specialized needs<br />
-            <span className="text-orange-500">in one drink.</span>
-          </p>
-          <p className="text-md md:text-lg mb-4">
-            Discover the world of Custom Brewed Teas, where every sip is tailored just for you! Whether you need high-protein teas to boost your day, teas with low calories for balanced nourishment, or caffeine for an energizing pick-me-up, we've got you covered.
-          </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-            <button className="bg-orange-500 text-white py-2 px-4 rounded-lg border-2  font-bold border-transparent hover-shine">
-              <Link href="/menu">View Menu</Link>
-            </button>
-            <button className="bg-orange-500 border-2   border-transparent hover-shine text-white py-2 px-4 rounded-lg font-bold">
-              <Link href="/togo-kit">To-go Kits</Link>
-            </button>
-          </div>
-        </section>
+      {/* ------------------------------- HERO ------------------------------ */}
+      <section className="pt-24 pb-10 text-center flex flex-col items-center gap-6 px-4">
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
+          DRINK <span className="text-orange-500">SMARTER</span>
+        </h1>
+        <p className="max-w-xl text-lg font-medium">
+          All your nutrition in one bold sip.
+        </p>
 
-        {/* Right section for picture */}
-        <section className="flex-1">
+        {/* Image carousel */}
+        <div className="w-full overflow-hidden py-4">
+          <motion.div
+            className="flex"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          >
+            {doubled.map((src, i) => (
+              <Image
+                key={i}
+                src={`/photos/${src}`}
+                alt="drink"
+                width={160}
+                height={160}
+                className="object-cover w-40 h-40 mx-2 rounded-lg shadow-md flex-shrink-0"
+              />
+            ))}
+          </motion.div>
+        </div>
+
+        <div className="flex gap-4 mt-4">
+          <Link
+            href="/menu"
+            className="bg-orange-500 text-white px-5 py-2 rounded-lg font-bold hover:scale-105 transition"
+          >
+            View Menu
+          </Link>
+          <Link
+            href="/togo-kit"
+            className="border border-orange-500 text-orange-500 px-5 py-2 rounded-lg font-bold hover:bg-orange-500 hover:text-white transition"
+          >
+            To‑Go Kits
+          </Link>
+        </div>
+      </section>
+
+      {/* -------------------------- PROMOTIONS ---------------------------- */}
+      <section className="max-w-screen-xl mx-auto px-4 py-20 grid sm:grid-cols-2 gap-10">
+        {/* Event card */}
+        <div className="relative h-72 sm:h-80 md:h-96 rounded-2xl shadow-lg group">
           <Image
-            src="/photos/meal/strawberry.PNG"
-            alt="Strawberry"
-            layout="responsive"
-            width={500}
-            height={400}
-            className="w-auto rounded-lg mx-auto"
+            src="/photos/image1.jpeg"
+            alt="events"
+            fill
+            className="object-cover transition-transform duration-500 "
           />
-        </section>
-      </div>
-
-      <hr className="border-t border-black border-1 my-8" />
-
-      <div className="flex flex-col md:flex-row gap-6 px-4 md:px-6 lg:px-10 max-w-screen-lg mx-auto">
-        {/* First Card */}
-        <div className="bg-gray-200 hover:bg-orange-500 hover:bg-opacity-20 transition-bg py-6 px-4 md:px-6 lg:px-10 max-w-md mx-auto rounded-lg flex-1 flex flex-col">
-          {/* Photo */}
-          <div className="flex justify-center mb-4">
-            <Image
-              src="/photos/image1.jpeg"
-              alt="Placeholder"
-              layout="responsive"
-              width={200}
-              height={150}
-              className="rounded-lg"
-            />
-          </div>
-
-          {/* Text */}
-          <div className="text-left flex-1">
-            <p className="text-xl md:text-2xl font-bold mb-2">
-              Want us to cater your event?<br />
-              Find out more here!<br />
-            </p>
-            <p className="text-md md:text-lg mb-4">
-              We offer a diverse range of teas and shakes that can be customized to meet your event's needs. Reach out to us to explore options and create a unique experience for your guests.
-            </p>
-          </div>
-
-          {/* Button */}
-          <div className="flex justify-start mb-4">
-            <button className="bg-orange-500 text-white py-2 px-4 rounded-lg font-bold">
-              <Link href="/events">Events</Link>
-            </button>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col justify-end p-6 text-white">
+            <h3 className="text-3xl font-bold mb-1">Cater Your Event</h3>
+            <p className="text-sm mb-4">Custom teas & shakes tailored to your crowd.</p>
+            <Link
+              href="/events"
+              className="self-start bg-orange-500 text-white px-4 py-2 rounded-lg font-bold shadow-md hover:brightness-110 transition"
+            >
+              Events
+            </Link>
           </div>
         </div>
 
-        {/* Second Card */}
-        <div className="bg-gray-200 hover:bg-blue-700 hover:bg-opacity-20 transition-bg py-6 px-4 md:px-6 lg:px-10 max-w-md mx-auto rounded-lg flex-1 flex flex-col">
-          {/* Photo */}
-          <div className="flex justify-center mb-4">
-            <Image
-              src="/photos/image3.jpeg"
-              alt="Placeholder"
-              layout="responsive"
-              width={300}
-              height={250}
-              className="rounded-lg"
-            />
-          </div>
-
-          {/* Text */}
-          <div className="text-left flex-1">
-            <p className="text-xl md:text-2xl font-bold mb-2">
-              Subscribe for updates on new teas!
-            </p>
-            <p className="text-md md:text-lg mb-4">
-              Sign up for updates and enjoy exclusive access to new teas that perfectly complement the changing seasons.
-            </p>
-          </div>
-
-          {/* Button */}
-          <div className="flex justify-start mb-4">
-            <button onClick={() => setShowPopup(true)} className="bg-orange-500 text-white py-2 px-4 rounded-lg font-bold">
+        {/* Subscribe card */}
+        <div className="relative h-72 sm:h-80 md:h-96 rounded-2xl shadow-lg group">
+          <Image
+            src="/photos/image3.jpeg"
+            alt="subscribe"
+            fill
+            className="object-cover transition-transform duration-500 "
+          />
+          <div className="absolute inset-0 bg-blue-900/50 backdrop-blur-sm flex flex-col justify-end p-6 text-white">
+            <h3 className="text-3xl font-bold mb-1">Stay in the Loop</h3>
+            <p className="text-sm mb-4">Get first dibs on new flavors.</p>
+            <button
+              onClick={() => setShowPopup(true)}
+              className="self-start bg-orange-500 text-white px-4 py-2 rounded-lg font-bold shadow-md hover:brightness-110 transition"
+            >
               Subscribe
             </button>
           </div>
         </div>
-        
-        
-      </div>
-      
+      </section>
 
-      <hr className="border-t border-black border-1 my-8" />
-
-      {/* Operating Hours Section */}
-      <div className="bg-gray-200 py-6 px-4 md:px-6 lg:px-10 max-w-screen-lg mx-auto rounded-lg transition-bg hover:bg-orange-500 hover:bg-opacity-20">
-        <div className="flex flex-col items-center justify-center">
-          <img
-            src="/photos/gat.PNG" // replace with the actual path to your image
-            alt="Gator Nutrition"
-            layout="responsive"
-            width={80}
-            height={80}
-            className="w-fit rounded-lg"
-          />
-          <h2 className="text-xl font-bold underline mt-10">Gator Nutrition Hours</h2>
-          <ul className="text-md space-y-1 mb-4 text-left">
-            <li>Monday: 7 AM – 3 PM</li>
-            <li>Tuesday: 7 AM – 3 PM</li>
-            <li>Wednesday: 7 AM – 3 PM</li>
-            <li>Thursday: 7 AM – 3 PM</li>
-            <li>Friday: 7 AM – 3 PM</li>
-            <li>Saturday: 10 AM – 2 PM</li>
-            <li>Sunday: Closed</li>
-          </ul>
-          
-          <a
-            href="https://www.google.com/maps/place/Gator+Nutrition/@29.6535184,-82.3840044,14z/data=!4m6!3m5!1s0x88e8a3f220440665:0xf91a6467369349ac!8m2!3d29.632644!4d-82.3733485!16s%2Fg%2F11ld97mqly?entry=ttu" // replace with your actual address link
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
-          >
-            View on Google Maps
-          </a>
+      {/* --------------------------- HOURS + MAP --------------------------- */}
+      <section className="bg-gray-100 py-10">
+        <div className="max-w-screen-lg mx-auto px-6 flex flex-col md:flex-row items-center gap-10 md:gap-20">
+          <div className="flex-1 text-center md:text-left">
+            <h2 className="text-3xl font-bold mb-4">Hours</h2>
+            <ul className="space-y-1 font-medium">
+              {[
+                "Mon – Fri · 7 AM – 3 PM",
+                "Sat · 10 AM – 2 PM",
+                "Sun · Closed",
+              ].map((h) => (
+                <li key={h}>{h}</li>
+              ))}
+            </ul>
+            <Link
+              href="https://www.google.com/maps/place/Gator+Nutrition/@29.632644,-82.3733485,17z"
+              target="_blank"
+              className="inline-block mt-4 text-orange-600 underline"
+            >
+              3314 SW 35th Blvd, Gainesville, FL
+            </Link>
+          </div>
+          <div className="flex-1 w-full h-64 rounded-lg overflow-hidden shadow-md">
+            <iframe
+              title="map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3523.4304755405654!2d-82.3759237!3d29.632644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e8a3f220440665%3A0xf91a6467369349ac!2sGator%20Nutrition!5e0!3m2!1sen!2sus!4v1689988888888!5m2!1sen!2sus"
+              width="100%"
+              height="100%"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
-      </div>
+      </section>
 
-      <hr className="border-t border-black border-1 my-8" />
-      {/* Footer */}
       <Footer />
 
-      {/* Subscription Popup */}
+      {/* ------------------------- SUBSCRIBE POPUP ------------------------- */}
       {showPopup && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-          
-        <motion.form
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: "backOut" }}
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <motion.form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-2 border bg-gray-200 p-10 rounded-lg max-w-lg m-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white p-8 rounded-lg w-full max-w-md shadow-lg flex flex-col gap-4"
           >
-            <button
-      className="text-center items-center  m-auto w-10  bg-orange-500  text-white  rounded-full "
-      onClick={() => setShowPopup(false)}
-      aria-label="Close"
-    >
-      x
-    </button>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2, ease: "backOut" }}
-              className="text-gray-600 mb-10 text-center"
-            >
-              Subscribe to our updates by providing your first name and email.
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3, ease: "backOut" }}
-            >
-              First Name
-            </motion.p>
-            <motion.input
+            <h3 className="text-xl font-bold text-center">Subscribe</h3>
+            <input
               type="text"
-              id="firstName"
-              placeholder="David"
-              className="p-2 rounded-lg placeholder:text-gray-500 text-black bg-white outline-none"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4, ease: "backOut" }}
+              placeholder="First name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
+              className="border p-2 rounded-md"
             />
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5, ease: "backOut" }}
-            >
-              Email
-            </motion.p>
-            <motion.input
+            <input
               type="email"
-              id="email"
-              placeholder="mail@example.com"
-              className="p-2 rounded-lg placeholder:text-gray-500 text-black bg-white outline-none"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6, ease: "backOut" }}
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="border p-2 rounded-md"
             />
-            <motion.button
-              className="border-transparent border-2 font-bold hover-shine mt-8 bg-orange-500 text-white py-2 px-4 rounded-lg transition"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.7, ease: "backOut" }}
+            <button
               type="submit"
+              className="bg-orange-500 text-white py-2 rounded-md font-bold hover:brightness-110"
             >
               Submit
-            </motion.button>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowPopup(false)}
+              className="text-sm text-gray-500 underline mx-auto"
+            >
+              Close
+            </button>
           </motion.form>
-      </div>
+        </div>
       )}
     </div>
   );

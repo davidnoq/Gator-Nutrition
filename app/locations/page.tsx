@@ -2,78 +2,69 @@ import Navbar from "@/components/navbar/navbar";
 import Image from "next/image";
 import Footer from "@/components/footer/footer";
 
+const locations = [
+  {
+    name: "Nutrition Escape",
+    address: "263 N Temple Ave, Starke, FL 32091",
+    imgMain: "/photos/loc1.PNG",
+    imgHover: "/photos/loc1.2.PNG",
+  },
+  {
+    name: "Herbalife Downtown Nutrition",
+    address: "154 N Marion Ave, Lake City, FL 32055",
+    imgMain: "/photos/loc2.PNG",
+    imgHover: "/photos/2222.PNG",
+  },
+];
+
 const Locations = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-white text-black min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="bg-white min-w-min max-w-screen max-h-max m-auto px-6 py-32">
-        <div className="text-center mb-32">
-        <h1 className="text-5xl font-bold text-black">Our Sister Locations</h1>
-        <h2 className="pt-5 md:text-lg text-black">Discover one of our nearby locations for your convenience!</h2>
-        </div>
+      <main className="flex-1 max-w-screen-xl mx-auto px-6 py-32">
+        {/* Heading */}
+        <header className="text-center mb-32">
+          <h1 className="text-5xl font-bold">Our Sister Locations</h1>
+          <h2 className="pt-5 md:text-lg">
+            Discover one of our nearby locations for your convenience!
+          </h2>
+        </header>
 
-        <div className="flex flex-col justify-center md:flex-row  gap-12 md:gap-20">
-          {/* Location 1 */}
-          <div className="relative bg-white p-6 rounded-lg shadow-lg border-2 border-opacity-0 transition-shadow transition-border duration-300 hover:shadow-lg hover:shadow-orange-500/50 hover:border-1 hover:border-orange-500 hover:border-opacity-20 hover:filter">
-            {/* Image Container */}
-            <div className="relative mb-4">
-              {/* Large Photo */}
-              <Image
-                src="/photos/loc1.PNG"
-                alt="Location Photo"
-                width={300}
-                height={200}
-                
-                className="object-cover rounded-lg"
-              />
-              {/* Hidden Photo */}
-              <div className="absolute inset-0 flex items-center justify-center bg-black/50 transition-opacity duration-300 opacity-0 hover:opacity-100">
+        {/* Cards */}
+        <section className="flex flex-col md:flex-row gap-12 md:gap-20 justify-center">
+          {locations.map(({ name, address, imgMain, imgHover }) => (
+            <div
+              key={name}
+              className="group bg-white p-6 rounded-lg shadow-md border-2 border-transparent
+                         transition duration-300 hover:shadow-orange-500/40 hover:border-orange-500/20"
+            >
+              {/* Image swap on hover */}
+              <div className="relative aspect-[4/3] mb-4 overflow-hidden rounded-lg">
+                {/* default image */}
                 <Image
-                  src="/photos/loc1.2.PNG"
-                  alt="Location Hidden Photo"
-                  layout="fill"
-                  className="object-cover rounded-lg"
+                  src={imgMain}
+                  alt={name}
+                  fill
+                  className="object-cover transition-opacity duration-300 group-hover:opacity-0"
+                />
+                {/* hover image */}
+                <Image
+                  src={imgHover}
+                  alt={`${name} — interior`}
+                  fill
+                  className="object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 />
               </div>
-            </div>
-            <h2 className="text-2xl font-semibold text-center mb-4">Nutrition Escape</h2>
-            <p className="text-gray-600 text-left">
-              263 N Temple Ave, Starke, FL 32091
-            </p>
-          </div>
 
-          {/* Location 2 */}
-          <div className="relative bg-white p-6 rounded-lg shadow-lg border-2 border-opacity-0 transition-shadow transition-border duration-300 hover:shadow-lg hover:shadow-orange-500/50 hover:border-1 hover:border-orange-500 hover:border-opacity-20 hover:filter">
-            {/* Image Container */}
-            <div className="relative mb-4">
-              {/* Large Photo */}
-              <Image
-                src="/photos/loc2.PNG"
-                alt="Location Photo"
-                width={300}
-                height={200}
-                className="object-cover rounded-lg"
-              />
-              {/* Hidden Photo */}
-              <div className="absolute inset-0 flex items-center justify-center bg-black/50 transition-opacity duration-300 opacity-0 hover:opacity-100">
-                <Image
-                  src="/photos/2222.PNG"
-                  alt="Location Hidden Photo"
-                  layout="fill"
-                  className="object-cover rounded-lg"
-                />
-              </div>
+              <h2 className="text-2xl font-semibold text-center mb-4">{name}</h2>
+              <p className="text-gray-600 text-left">{address}</p>
             </div>
-            <h2 className="text-2xl font-semibold text-center mb-4">Herbalife Downtown Nutrition</h2>
-            <p className="text-gray-600 text-left">
-              154 N Marion Ave, Lake City, FL 32055
-            </p>
-          </div>
-        </div>
+          ))}
+        </section>
       </main>
 
-      <hr className="border-t border-black border-3" />
+      <hr className="border-t border-black" />
       <Footer />
     </div>
   );
